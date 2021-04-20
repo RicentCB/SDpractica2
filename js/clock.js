@@ -5,7 +5,7 @@ class Clock {
         secs %= 60;
         this._seconds = hours * 60 * 60 + mins * 60 + secs;
     }
-    getTime() {
+    get time() {
         let hours = Math.floor(this._seconds / (60 * 60));
         let minutes = Math.floor((this._seconds - hours * 60 * 60) / 60);
         let seconds = this._seconds - minutes * 60 - hours * 60 * 60;
@@ -34,7 +34,7 @@ function mainLoop() {
     const velocity = 0.7;
     return setInterval(function () {
         internal_clock.advance();
-        postMessage(internal_clock.getTime());
+        postMessage(internal_clock.time);
     }, Math.round(1000 * velocity));
 }
 
@@ -42,7 +42,7 @@ var mlHandler = mainLoop();
 
 onmessage = function execState(e) {
     if (e.data[0] === 'getTime') {
-        postMessage(internal_clock.getTime());
+        postMessage(internal_clock.time);
     } else if (e.data[0] === 'setTime') {
         clearInterval(mlHandler);
         mlHandler = mainLoop();
