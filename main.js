@@ -13,7 +13,7 @@ function createWindow () {
     }
   })
 
-  // and load the index.html of the app.
+  //Comentar y descomentar, para activar interface de Servidor o Cliente
   mainWindow.loadFile('index.html')
   // mainWindow.loadFile('indexCli.html')
 
