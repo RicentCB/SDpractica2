@@ -12,33 +12,47 @@ function updateClockDom(domElement, clock) {
 
 function assignVelocityController(worker, domElements) {
     let velocity = 1.0;
-    let delta = 0.1;
-    let maximum = 2;
+    let delta = 1.0;
+    let maximum = 100;
+    const delayAnimation = 1500;
 
     (function () {
         console.log("Assigning callbacks");
         domElements.increase.on('click', function (e) {
             e.preventDefault();
+            let notification = $(this).parent().find(".notification");
+            let notifMessage;
             if ((velocity - delta) > 0) {
                 velocity -= delta;
-                console.log("Increasing velocity to " + velocity);
+                console.log("Increasing  to " + velocity);
+                notifMessage = `<p>Incrementando a ${velocity.toFixed(1)}</p>`;
                 worker.postMessage({
                     action: 'setVelocity',
                     velocity: velocity
                 });
             }
+            notification.html(notifMessage).addClass("appear");
+            setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
+            
         });
         domElements.decrease.on('click', function (e) {
             e.preventDefault();
+            let notification = $(this).parent().find(".notification");
+            let notifMessage;
             if ((velocity + delta) < maximum) {
                 velocity += delta;
                 console.log("Decreasing velocity to " + velocity);
+                notifMessage = `<p>Decrementando a ${velocity.toFixed(1)}</p>`;
                 worker.postMessage({
                     action: 'setVelocity',
                     velocity: velocity
                 });
             }
+            notification.html(notifMessage).addClass("appear");
+            setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
         });
+
+        
     })();
 }
 
@@ -50,25 +64,25 @@ var worker3 = new Worker('./js/clock.js');
 //Reloj Maestro
 workerM.onmessage = function (e) {
     let clockM = e.data;
-    logClock('Master Clock', clockM);
+    // logClock('Master Clock', clockM);
     updateClockDom($(".clock#clock-m"), clockM);
 }
 //Reloj 1
 worker1.onmessage = function (e) {
     let clock1 = e.data;
-    logClock('Clock 1', clock1);
+    // logClock('Clock 1', clock1);
     updateClockDom($(".clock#clock-1"), clock1);
 }
 //Reloj 2
 worker2.onmessage = function (e) {
     let clock2 = e.data;
-    logClock('Clock 2', clock2);
+    // logClock('Clock 2', clock2);
     updateClockDom($(".clock#clock-2"), clock2);
 }
 //Reloj 3
 worker3.onmessage = function (e) {
     let clock3 = e.data;
-    logClock('Clock 3', clock3);
+    // logClock('Clock 3', clock3);
     updateClockDom($(".clock#clock-3"), clock3);
 }
 
@@ -87,22 +101,22 @@ export default function main() {
     });
 
     assignVelocityController(workerM, {
-        increase: $(".clock#clock-m .front-step"),
-        decrease: $(".clock#clock-m .back-step")
+        increase: $(".clock#clock-m .increase"),
+        decrease: $(".clock#clock-m .decrease")
     });
 
     assignVelocityController(worker1, {
-        increase: $(".clock#clock-1 .front-step"),
-        decrease: $(".clock#clock-1 .back-step")
+        increase: $(".clock#clock-1 .increase"),
+        decrease: $(".clock#clock-1 .decrease")
     });
 
     assignVelocityController(worker2, {
-        increase: $(".clock#clock-2 .front-step"),
-        decrease: $(".clock#clock-2 .back-step")
+        increase: $(".clock#clock-2 .increase"),
+        decrease: $(".clock#clock-2 .decrease")
     });
 
     assignVelocityController(worker3, {
-        increase: $(".clock#clock-3 .front-step"),
-        decrease: $(".clock#clock-3 .back-step")
+        increase: $(".clock#clock-3 .increase"),
+        decrease: $(".clock#clock-3 .decrease")
     });
 }
