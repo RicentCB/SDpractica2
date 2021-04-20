@@ -17,7 +17,7 @@ class Clock {
             seconds: seconds
         };
     }
-    setTime(time) {
+    set time(time) {
         hours %= 24;
         mins %= 60;
         secs %= 60;
@@ -32,94 +32,16 @@ const getRandom = maxNum => (Math.floor(Math.random() * maxNum));
 
 var internal_clock = new Clock();
 
-// function loop for clocks without a socket server
+
 function mainLoop(velocity) {
     return setInterval(function () {
         internal_clock.advance();
         postMessage(internal_clock.time);
-    }, Math.round(1000 * velocity));
-}
-
-// function loop for socketed clocks
-function mainLoopSocketed(velocity, client) {
-    return setInterval(function () {
-        internal_clock.advance();
-        postMessage(internal_clock.time);
-
-        let data = {
-            time: internal_clock.time,
-            name: name,
-        }
-
-        let message = Buffer.from(JSON.stringify(data));
-
-        client.send(message);
-    }, Math.round(1000 * velocity));
+    }, Math.floor(1000 * velocity));
 }
 
 var name;
-
-function execState() {
-    let velocity = 1.0;
-    let mlHandler = mainLoop(velocity);
-    /*
-    Function executed on received message.
-    Can receive a JS object with the following structure:
-    (? next to a key means the key is optional)
-    {
-        action: action, // Action to execute ('setTime', 'setVelocity')
-        time: {
-            hours: Number,
-            minutes: Number,
-            seconds: Number
-        }?, // used only on setTime action
-        velocity: Float? // used only on setVelocity action
-    }
-    */
-    return function (e) {
-        if (e.data.action === 'setTime') {
-            clearInterval(mlHandler);
-            internal_clock.setTime(e.data.time);
-            mlHandler = mainLoop(velocity);
-        } else if (e.data.action === 'setVelocity') {
-            clearInterval(mlHandler);
-            velocity = e.data.velocity;
-            mlHandler = mainLoop(velocity);
-        }
-    }
-}
-
-// Generator function with closure to save state
-function execStateSocketed(client) {
-    let velocity = 1.0;
-    let mlHandler = mainLoopSocketed(velocity, client);
-
-    /*
-    Function executed on received message.
-    Can receive a JS object with the following structure:
-    (? next to a key means the key is optional)
-    {
-        action: action, // Action to execute ('setTime', 'setVelocity')
-        time: {
-            hours: Number,
-            minutes: Number,
-            seconds: Number
-        }?, // used only on setTime action
-        velocity: Float? // used only on setVelocity action
-    }
-    */
-    return function (e) {
-        if (e.data.action === 'setTime') {
-            clearInterval(mlHandler);
-            internal_clock.setTime(e.data.time);
-            mlHandler = mainLoopSocketed(velocity, client);
-        } else if (e.data.action === 'setVelocity') {
-            clearInterval(mlHandler);
-            velocity = e.data.velocity;
-            mlHandler = mainLoopSocketed(client);
-        }
-    }
-}
+var client;
 
 
 /*
@@ -129,23 +51,67 @@ Can receive a JS object with the following structure:
 (? next to a key means the key is optional)
 {
     name: str, // Name assigned to this clock
-    destAddr: {
+    destAddr : {
         port: Number,
         ip: str
-    }?, // If ommited, the clock won't initalize a socket
-
+    }?
 }
 */
 onmessage = function initState(e) {
-    name = e.data.name;
-    if (e.data.hasOwnProperty('destAddr')) {
+
+    let enableSocket = e.data.hasOwnProperty('destAddr');
+    if (enableSocket) {
         let dest = e.data.destAddr;
         client = dgram.createSocket('udp4');
         client.connect(dest.port, dest.ip);
-
-        this.onmessage = execStateSocketed(client);
-    } else {
-        this.onmessage = execState();
     }
-}
+
+    name = e.data.name;
+
+    this.onmessage = (function execState() {
+        let velocity = 1.0;
+        let mlHandler = mainLoop(velocity);
+        /*
+        Function executed on received message.
+        Can receive a JS object with the following structure:
+        (? next to a key means the key is optional)
+        {
+            action: action, // Action to execute ('setTime', 'setVelocity')
+            time: {
+                hours: Number,
+                minutes: Number,
+                seconds: Number
+            }?, // used on setTime and setAll actions
+            velocity: Float? // used on setVelocity and setAll actions
+        }
+        */
+        return function (e) {
+            if (e.data.action === 'setTime') {
+                clearInterval(mlHandler);
+                internal_clock.time = e.data.time;
+                mlHandler = mainLoop(velocity);
+            } else if (e.data.action === 'setVelocity') {
+                clearInterval(mlHandler);
+                velocity = e.data.velocity;
+                mlHandler = mainLoop(velocity);
+            } else if (e.data.action === 'setAll') {
+                clearInterval(mlHandler);
+                internal_clock.time = e.data.time;
+                velocity = e.data.velocity;
+                mlHandler = mainLoop(velocity);
+            } else if (e.data.action === 'stop'){
+                clearInterval(mlHandler);
+            } else if (e.data.action === 'send' && enableSocket) {
+                console.log("Sending data to " + client);
+                let data = {
+                    time: internal_clock.time,
+                    name: name,
+                }
+                let message = Buffer.from(JSON.stringify(data));
+
+                client.send(message);
+            }
+        }
+    })();
+};
 

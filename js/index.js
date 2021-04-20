@@ -10,14 +10,22 @@ const updateClockDom = (domElement, clock)=>{
     domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
 }
 
-const assignVelocityController = (worker, domElements) =>{
+const assignSendController = (worker, domElement)=>{
+    domElement.on('click', function(e){
+        e.preventDefault()
+        worker.postMessage({
+            action: 'send'
+        });
+    })
+}
+
+const assignVelocityController = (worker, domElements)=>{
     let velocity = 1.0;
     let delta = 1.0;
     let maximum = 100;
     const delayAnimation = 1500;
 
-    (()=>{
-        console.log("Assigning callbacks");
+    (function () {
         domElements.increase.on('click', function (e) {
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
@@ -95,7 +103,11 @@ export default function main() {
         name: "Reloj Maestro"
     });
     worker1.postMessage({
-        name: "Reloj 1"
+        name: "Reloj 1",
+        destAddr: {
+            port: 5500,
+            ip: "localhost"
+        }
     });
     worker2.postMessage({
         name: "Reloj 2"
