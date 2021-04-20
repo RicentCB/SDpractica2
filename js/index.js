@@ -5,7 +5,7 @@ const logClock = (name, time) => {
 const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString());
 
 const modalEdit = $("#modal-edit-clock");
-var editingClock;
+var editingClock;       //Variable global con el id del reloj a editar
 
 //Cerrar Modal
 modalEdit.find("a.button.cancel").on("click", e=>{
@@ -25,19 +25,36 @@ modalEdit.find("a.button.accept").on("click", e=>{
         secs: newSecs,
     };
     //Camnbiar reloj
-    workerM.postMessage({
-        action: 'setTimeNoStart',
-        time: time,
-    })
+    if(editingClock === 0)
+        workerM.postMessage({
+            action: 'setTimeNoStart',
+            time: time,
+        });
+    else if(editingClock === 1)
+        worker1.postMessage({
+            action: 'setTimeNoStart',
+            time: time,
+        });
+    else if(editingClock === 2)
+        worker2.postMessage({
+            action: 'setTimeNoStart',
+            time: time,
+        });
+    else if(editingClock === 3)
+        worker3.postMessage({
+            action: 'setTimeNoStart',
+            time: time,
+        });
     //Cerrar modal
     modalEdit.removeClass("show");
 })
-
 
 const openModalEditCLock = (currHours, currMins, currSecs) =>{
     modalEdit.find(".hours input").val(currHours);
     modalEdit.find(".mins input").val(currMins);
     modalEdit.find(".secs input").val(currSecs);
+    let titleCLock = (editingClock===0) ? 'Maestro' : editingClock.toString();
+    modalEdit.find("h3 span").html(titleCLock);
     modalEdit.addClass("show");
 }
 
