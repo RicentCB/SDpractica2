@@ -12,6 +12,7 @@ section#main-content {
     z-index: 1;
     padding: 2% 5%;
     box-sizing: border-box;
+    min-height: 100vh;
 }
 section#main-content > h1{
     margin-bottom: 25px;
@@ -20,7 +21,6 @@ section#main-content > h1{
 section#main-content .row-flex-container{
     display: flex;
     flex-direction: row;
-    height: 40%;
     box-sizing: border-box;
     margin-bottom: 30px;
 }
@@ -43,13 +43,19 @@ section#main-content .clock h3{
     border-radius: 25px;
     padding: 13px 10px 13px 15px;
     font-size: 1.2em;
-    background-color: rgb(255, 60, 0);
+    background-color: rgb(255, 75, 20);
     color: white;
     position: absolute;
-    top: -10px;
-    right: -10px;
+    right: -20px;
     z-index: 3;
     transition: all 0.25s ease-in;
+}
+#main-content .clock a.btn-float.edit-clock{
+    top: 10%;
+}
+#main-content .clock a.btn-float.send-clock{
+    bottom: 10%;
+    background-color: rgb(45, 213, 243);
 }
 #main-content .clock a.btn-float:hover{
     transform: scale(1.2);
