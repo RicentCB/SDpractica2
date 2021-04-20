@@ -121,16 +121,20 @@ export default function main() {
         decrease: $(".clock#clock-m .decrease")
     });
 
+    assignSendController(worker1, $(".clock#clock-1 .send-clock"));
+
     assignVelocityController(worker1, {
         increase: $(".clock#clock-1 .increase"),
         decrease: $(".clock#clock-1 .decrease")
     });
 
+    assignSendController(worker2, $(".clock#clock-2 .send-clock"));
     assignVelocityController(worker2, {
         increase: $(".clock#clock-2 .increase"),
         decrease: $(".clock#clock-2 .decrease")
     });
 
+    assignSendController(worker3, $(".clock#clock-3 .send-clock"));
     assignVelocityController(worker3, {
         increase: $(".clock#clock-3 .increase"),
         decrease: $(".clock#clock-3 .decrease")

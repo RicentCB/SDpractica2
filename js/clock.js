@@ -102,7 +102,8 @@ onmessage = function initState(e) {
             } else if (e.data.action === 'stop'){
                 clearInterval(mlHandler);
             } else if (e.data.action === 'send' && enableSocket) {
-                console.log("Sending data to " + client);
+                let address = client.address();
+                console.log(`Sending data to ${address.address}:${address.port}` );
                 let data = {
                     time: internal_clock.time,
                     name: name,
