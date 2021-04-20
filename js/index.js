@@ -41,5 +41,16 @@ worker3.onmessage = function (e) {
 }
 
 export default function main() {
-    
+    workerM.postMessage({
+        name: "Reloj Maestro"
+    });
+    worker1.postMessage({
+        name: "Reloj 1"
+    });
+    worker2.postMessage({
+        name: "Reloj 2"
+    });
+    worker3.postMessage({
+        name: "Reloj 3"
+    });
 }
