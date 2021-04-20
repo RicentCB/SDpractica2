@@ -60,13 +60,13 @@ section#main-content .clock h3{
 #main-content .clock a.btn-float.back-step{
     top: auto;
     bottom: -25px;
-    right: 0;
+    right: 50px;
     background-color: rgba(255, 255, 255, 0.01);
 }
 #main-content .clock a.btn-float.front-step{
     top: auto;
     bottom: -25px;
-    right: 50px;
+    right: 0;
     background-color: rgba(255, 255, 255, 0.01);
 }
 #main-content .clock a.btn-float:hover{
