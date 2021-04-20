@@ -46,10 +46,5 @@ worker3.onmessage = function (e) {
 }
 
 export default function main() {
-    setInterval(function () {
-        workerM.postMessage(["getTime"]);
-        worker2.postMessage(["getTime"]);
-        worker1.postMessage(["getTime"]);
-        worker3.postMessage(["getTime"]);
-    }, 1000);
+    
 }
