@@ -1,8 +1,8 @@
 # Sistemas Distribuidos Practica2
 
-## To Use
+## Como usarlo
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+Para clonar y usar el repo necesitas [Git](https://git-scm.com) y [Node.js](https://nodejs.org/en/download/) (el cual viene con [npm](http://npmjs.com)) instalados en tu ordenador. Desde la linea de comandos:
 
 ```bash
 # Clone this repository
@@ -13,6 +13,14 @@ cd SDpractica2
 npm install
 # Run the app
 npm start
+```
+
+### Correr cliente - servidor
+
+Por defecto correra el servidor, si quieres usar el cliente, deberas ir al archivo [main.js], y modificar comentar la linea 19, y descomentar la linea 20.
+```
+//mainWindow.loadFile('index.html')
+mainWindow.loadFile('indexCli.html')
 ```
 
 ## License
