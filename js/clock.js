@@ -1,38 +1,49 @@
-class Clock{
-    constructor(hour, min, sec){
-        this._hour = hour;
-        this._min = min;
-        this._sec = sec;
+class Clock {
+    constructor(hours = getRandom(24), mins = getRandom(60), secs = getRandom(60)) {
+        let now = new Date();
+        let offset = new Date(now.getTime())
+        now.setHours(hours);
+        now.setMinutes(mins);
+        now.setSeconds(secs);
+        this._now = now.getTime();
+        this._offset = offset.getTime();
     }
-    get hour(){
-        if(this._hour.toString().length < 2)
-            return `0${this._hour}`;
-        return this._hour;
-    }
-    get min(){
-        if(this._min.toString().length < 2)
-            return `0${this._min}`;
-        return this._min;
-    }
-    get sec(){
-        if(this._sec.toString().length < 2)
-            return `0${this._sec}`;
-        return this._sec;
-    }
+    getCurrentTime() {
+        let now = Date.now();
+        let delta = now - this._offset;
+        this._offset = now;
 
+        this._now = this._now + delta;
 
-    increment(){
-        this._sec += 1;
-        if(this._sec == 60){
-            this._sec = 0
-            this._min += 1;
-        }
-        if(this._min == 60){
-            this._min = 0
-            this._hour += 1;
-        }
-        if(this._hour == 25){
-            this._hour = 0
-        }
+        return new Date(this._now);
+    }
+    setTime(h, m, s) {
+        let newTime = this.getCurrentTime();
+        newTime.setHours(h);
+        newTime.setMinutes(m);
+        newTime.setSeconds(s);
+        this._now = newTime.getTime();
+    }
+}
+
+const getRandom = maxNum => (Math.floor(Math.random() * maxNum));
+
+var internal_clock = new Clock();
+var last_value = internal_clock.getCurrentTime();
+
+function mainLoop() {
+    return setInterval(function () {
+        last_value = internal_clock.getCurrentTime();
+    }, 1);
+}
+
+var mlHandler = mainLoop();
+
+onmessage = function execState(e) {
+    if (e.data[0] === 'getTime') {
+        postMessage(last_value);
+    } else if (e.data[0] === 'setTime') {
+        clearInterval(mlHandler);
+        mlHandler = mainLoop();
     }
 }
