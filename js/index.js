@@ -18,23 +18,7 @@ const incrementClocks = ()=>{
     clock3.increment();
 }
 
-
-//Inicializar Relojes
-initClocks();
-$(document).ready(function(){
-    
-    console.log(clockM)
-    console.log(clock1)
-    console.log(clock2)
-    console.log(clock3)
-    
-    updateInteface();
-    // let interval1 = 1000;
-    // setInterval(clock1.increment(), interval1);
-
-
-})
-const updateInteface = ()=>{
+const updateInterface = ()=>{
     //Reloj Maestro
     let domClockM = $(".clock#clock-m")
     domClockM.find("h1.hours").html(clockM.hour);
@@ -51,7 +35,14 @@ const updateInteface = ()=>{
     domClock2.find("h1.mins").html(clock2.min);
     domClock2.find("h1.secs").html(clock2.sec);
     let domClock3 = $(".clock#clock-3")
+    //Reloj 2
     domClock3.find("h1.hours").html(clock3.hour);
     domClock3.find("h1.mins").html(clock3.min);
     domClock3.find("h1.secs").html(clock3.sec);
 }
+
+//Inicializar Relojes
+initClocks();
+$(document).ready(function(){
+
+})
