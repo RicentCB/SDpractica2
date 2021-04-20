@@ -1,8 +1,8 @@
-function logClock(name, time) {
+const logClock = (name, time)=>{
     console.log(`${name}: ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
 }
 
-function asDoubleDigit(num) {
+const asDoubleDigit = num=> {
     if (num < 10)
         return "0" + num;
     else
