@@ -10,7 +10,7 @@ section#main-content {
     background-color: rgb(51, 51, 51);
     width: 100%;
     position: fixed;
-    top: 0;
+    top: 1;
     z-index: -1;
     padding: 7% 5%;
     box-sizing: border-box;
