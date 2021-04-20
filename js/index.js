@@ -27,22 +27,22 @@ modalEdit.find("a.button.accept").on("click", e=>{
     //Camnbiar reloj
     if(editingClock === 0)
         workerM.postMessage({
-            action: 'setTimeNoStart',
+            action: 'setTime',
             time: time,
         });
     else if(editingClock === 1)
         worker1.postMessage({
-            action: 'setTimeNoStart',
+            action: 'setTime',
             time: time,
         });
     else if(editingClock === 2)
         worker2.postMessage({
-            action: 'setTimeNoStart',
+            action: 'setTime',
             time: time,
         });
     else if(editingClock === 3)
         worker3.postMessage({
-            action: 'setTimeNoStart',
+            action: 'setTime',
             time: time,
         });
     //Cerrar modal
@@ -179,10 +179,18 @@ export default function main() {
         }
     });
     worker2.postMessage({
-        name: "Reloj 2"
+        name: "Reloj 2",
+        destAddr: {
+            port: 41235,
+            ip: "localhost"
+        }
     });
     worker3.postMessage({
-        name: "Reloj 3"
+        name: "Reloj 3",
+        destAddr: {
+            port: 41236,
+            ip: "localhost"
+        }
     });
 
     assignEditController(workerM, $(".clock#clock-m .edit-clock"), 0);
