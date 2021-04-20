@@ -10,6 +10,30 @@ const updateClockDom = (domElement, clock)=>{
     domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
 }
 
+const assignEditController = (worker, domElement)=>{
+    domElement.on('click', e=>{
+        e.preventDefault();
+        //Detener Reloj
+        worker.postMessage({
+            action: 'stop'  
+        })
+        //Editar reloj
+        worker.postMessage({
+            action: 'setTime',
+            time: {
+                hours: 12,
+                mins: 30,
+                secs: 30,
+            }
+        })
+        //Detener Reloj
+        worker.postMessage({
+            action: 'stop'  
+        })
+
+    })
+}
+
 const assignSendController = (worker, domElement)=>{
     domElement.on('click', function(e){
         e.preventDefault()
@@ -116,13 +140,13 @@ export default function main() {
         name: "Reloj 3"
     });
 
+    assignEditController(workerM, $(".clock#clock-m .edit-clock"))
     assignVelocityController(workerM, {
         increase: $(".clock#clock-m .increase"),
         decrease: $(".clock#clock-m .decrease")
     });
 
     assignSendController(worker1, $(".clock#clock-1 .send-clock"));
-
     assignVelocityController(worker1, {
         increase: $(".clock#clock-1 .increase"),
         decrease: $(".clock#clock-1 .decrease")
