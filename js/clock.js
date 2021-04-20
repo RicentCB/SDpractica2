@@ -88,6 +88,9 @@ onmessage = function initState(e) {
                 clearInterval(mlHandler);
                 internal_clock.time = e.data.time;
                 mlHandler = mainLoop(velocity);
+            }else if (e.data.action === 'setTimeNoStart') {
+                clearInterval(mlHandler);
+                internal_clock.time = e.data.time;
             } else if (e.data.action === 'setVelocity') {
                 clearInterval(mlHandler);
                 velocity = e.data.velocity;
