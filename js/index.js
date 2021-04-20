@@ -4,10 +4,42 @@ const logClock = (name, time) => {
 
 const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString())
 
-const updateClockDom = (domElement, clock)=>{
+function updateClockDom(domElement, clock) {
     domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
     domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
     domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
+}
+
+function assignVelocityController(worker, domElements) {
+    let velocity = 1.0;
+    let delta = 0.1;
+    let maximum = 2;
+
+    (function () {
+        console.log("Assigning callbacks");
+        domElements.increase.on('click', function (e) {
+            e.preventDefault();
+            if ((velocity - delta) > 0) {
+                velocity -= delta;
+                console.log("Increasing velocity to " + velocity);
+                worker.postMessage({
+                    action: 'setVelocity',
+                    velocity: velocity
+                });
+            }
+        });
+        domElements.decrease.on('click', function (e) {
+            e.preventDefault();
+            if ((velocity + delta) < maximum) {
+                velocity += delta;
+                console.log("Decreasing velocity to " + velocity);
+                worker.postMessage({
+                    action: 'setVelocity',
+                    velocity: velocity
+                });
+            }
+        });
+    })();
 }
 
 var workerM = new Worker('./js/clock.js');
@@ -52,5 +84,25 @@ export default function main() {
     });
     worker3.postMessage({
         name: "Reloj 3"
+    });
+
+    assignVelocityController(workerM, {
+        increase: $(".clock#clock-m .front-step"),
+        decrease: $(".clock#clock-m .back-step")
+    });
+
+    assignVelocityController(worker1, {
+        increase: $(".clock#clock-1 .front-step"),
+        decrease: $(".clock#clock-1 .back-step")
+    });
+
+    assignVelocityController(worker2, {
+        increase: $(".clock#clock-2 .front-step"),
+        decrease: $(".clock#clock-2 .back-step")
+    });
+
+    assignVelocityController(worker3, {
+        increase: $(".clock#clock-3 .front-step"),
+        decrease: $(".clock#clock-3 .back-step")
     });
 }
