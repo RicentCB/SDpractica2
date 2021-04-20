@@ -1,5 +1,5 @@
 const logClock = (name, time)=>{
-    console.log(`${name}: ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
+    console.log(`${name}: ${time.hours}:${time.minutes}:${time.seconds}`);
 }
 
 const asDoubleDigit = num=> {
@@ -10,9 +10,9 @@ const asDoubleDigit = num=> {
 }
 
 const updateClockDom = (domElement, clock)=>{
-    domElement.find("h1.hours").html(asDoubleDigit(clock.getHours()));
-    domElement.find("h1.mins").html(asDoubleDigit(clock.getMinutes()));
-    domElement.find("h1.secs").html(asDoubleDigit(clock.getSeconds()));
+    domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
+    domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
+    domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
 }
 
 var workerM = new Worker('./js/clock.js');

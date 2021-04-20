@@ -1,47 +1,47 @@
 class Clock {
     constructor(hours = getRandom(24), mins = getRandom(60), secs = getRandom(60)) {
-        let now = new Date();
-        let offset = new Date(now.getTime())
-        now.setHours(hours);
-        now.setMinutes(mins);
-        now.setSeconds(secs);
-        this._now = now.getTime();
-        this._offset = offset.getTime();
+        hours %= 24;
+        mins %= 60;
+        secs %= 60;
+        this._seconds = hours * 60 * 60 + mins * 60 + secs;
     }
-    get currentTime() {
-        let now = Date.now();
-        let delta = now - this._offset;
-        this._offset = now;
-
-        this._now = this._now + delta;
-
-        return new Date(this._now);
+    getTime() {
+        let hours = Math.floor(this._seconds / (60 * 60));
+        let minutes = Math.floor((this._seconds - hours * 60 * 60) / 60);
+        let seconds = this._seconds - minutes * 60 - hours * 60 * 60;
+        return {
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds
+        };
     }
-    setTime(h, m, s) {
-        let newTime = this.currentTime;
-        newTime.setHours(h);
-        newTime.setMinutes(m);
-        newTime.setSeconds(s);
-        this._now = newTime.getTime();
+    setTime(hours, mins, secs) {
+        hours %= 24;
+        mins %= 60;
+        secs %= 60;
+        this._seconds = hours * 60 * 60 + mins * 60 + secs;
+    }
+    advance(){
+        this._seconds = (this._seconds + 1) % (24 * 60 * 60);
     }
 }
 
 const getRandom = maxNum => (Math.floor(Math.random() * maxNum));
 
 var internal_clock = new Clock();
-var last_value = internal_clock.currentTime;
 
 function mainLoop() {
+    const velocity = 1.0;
     return setInterval(function () {
-        last_value = internal_clock.currentTime;
-    }, 1);
+        internal_clock.advance();
+    }, Math.round(1000 * velocity));
 }
 
 var mlHandler = mainLoop();
 
 onmessage = function execState(e) {
     if (e.data[0] === 'getTime') {
-        postMessage(last_value);
+        postMessage(internal_clock.getTime());
     } else if (e.data[0] === 'setTime') {
         clearInterval(mlHandler);
         mlHandler = mainLoop();
