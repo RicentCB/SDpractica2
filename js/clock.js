@@ -44,10 +44,10 @@ function mainLoop(velocity) {
 function mainLoopSocketed(velocity, client) {
     return setInterval(function () {
         internal_clock.advance();
-        postMessage(internal_clock.getTime());
+        postMessage(internal_clock.time);
 
         let data = {
-            time: internal_clock.getTime(),
+            time: internal_clock.time,
             name: name,
         }
 

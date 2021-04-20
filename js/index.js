@@ -22,15 +22,17 @@ function assignVelocityController(worker, domElements) {
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
-            if ((velocity - delta) > 0) {
-                velocity -= delta;
-                console.log("Increasing  to " + velocity);
+
+            if ((velocity + delta) < maximum) {
+                velocity += delta;
+                console.log("Increasing velocity to " + velocity);
                 notifMessage = `<p>Incrementando a ${velocity.toFixed(1)}</p>`;
                 worker.postMessage({
                     action: 'setVelocity',
                     velocity: velocity
                 });
             }
+            
             notification.html(notifMessage).addClass("appear");
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
             
@@ -39,15 +41,17 @@ function assignVelocityController(worker, domElements) {
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
-            if ((velocity + delta) < maximum) {
-                velocity += delta;
-                console.log("Decreasing velocity to " + velocity);
+
+            if ((velocity - delta) > 0) {
+                velocity -= delta;
+                console.log("Decreasing  to " + velocity);
                 notifMessage = `<p>Decrementando a ${velocity.toFixed(1)}</p>`;
                 worker.postMessage({
                     action: 'setVelocity',
                     velocity: velocity
                 });
             }
+            
             notification.html(notifMessage).addClass("appear");
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
         });
