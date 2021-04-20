@@ -23,6 +23,7 @@ const assignEditController = (worker, domElement)=>{
         worker.postMessage({
             action: 'stop'
         })
+        $("#modal-edit-clock").addClass("show");
         //Editar reloj
         worker.postMessage({
             action: 'setTimeNoStart',
