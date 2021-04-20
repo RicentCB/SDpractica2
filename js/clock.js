@@ -67,13 +67,13 @@ function execState() {
     Can receive a JS object with the following structure:
     (? next to a key means the key is optional)
     {
-        action: action, // Action to execute ('setTime', 'setSpeed')
+        action: action, // Action to execute ('setTime', 'setVelocity')
         time: {
             hours: Number,
             minutes: Number,
             seconds: Number
         }?, // used only on setTime action
-        velocity: Float? // used only on setSpeed action
+        velocity: Float? // used only on setVelocity action
     }
     */
     return function (e) {
@@ -81,7 +81,7 @@ function execState() {
             clearInterval(mlHandler);
             internal_clock.setTime(e.data.time);
             mlHandler = mainLoop(velocity);
-        } else if (e.data.action === 'setSpeed') {
+        } else if (e.data.action === 'setVelocity') {
             clearInterval(mlHandler);
             velocity = e.data.velocity;
             mlHandler = mainLoop(velocity);
@@ -99,13 +99,13 @@ function execStateSocketed(client) {
     Can receive a JS object with the following structure:
     (? next to a key means the key is optional)
     {
-        action: action, // Action to execute ('setTime', 'setSpeed')
+        action: action, // Action to execute ('setTime', 'setVelocity')
         time: {
             hours: Number,
             minutes: Number,
             seconds: Number
         }?, // used only on setTime action
-        velocity: Float? // used only on setSpeed action
+        velocity: Float? // used only on setVelocity action
     }
     */
     return function (e) {
@@ -113,7 +113,7 @@ function execStateSocketed(client) {
             clearInterval(mlHandler);
             internal_clock.setTime(e.data.time);
             mlHandler = mainLoopSocketed(velocity, client);
-        } else if (e.data.action === 'setSpeed') {
+        } else if (e.data.action === 'setVelocity') {
             clearInterval(mlHandler);
             velocity = e.data.velocity;
             mlHandler = mainLoopSocketed(client);
