@@ -13,10 +13,7 @@ const updateClockDom = (domElement, clock)=>{
 const assignEditController = (worker, domElement)=>{
     domElement.on('click', e=>{
         e.preventDefault();
-        //Detener Reloj
-        worker.postMessage({
-            action: 'stop'  
-        })
+        
         //Editar reloj
         worker.postMessage({
             action: 'setTime',
@@ -30,7 +27,7 @@ const assignEditController = (worker, domElement)=>{
         worker.postMessage({
             action: 'stop'  
         })
-
+        // logClock("test", )
     })
 }
 
@@ -49,8 +46,8 @@ const assignVelocityController = (worker, domElements)=>{
     let maximum = 100;
     const delayAnimation = 1500;
 
-    (function () {
-        domElements.increase.on('click', function (e) {
+    (() => {
+        domElements.increase.on('click',  e=>{
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
@@ -69,7 +66,7 @@ const assignVelocityController = (worker, domElements)=>{
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
             
         });
-        domElements.decrease.on('click', function (e) {
+        domElements.decrease.on('click', e=>{
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
@@ -98,25 +95,25 @@ var worker2 = new Worker('./js/clock.js');
 var worker3 = new Worker('./js/clock.js');
 
 //Reloj Maestro
-workerM.onmessage = function (e) {
+workerM.onmessage = e => {
     let clockM = e.data;
     // logClock('Master Clock', clockM);
     updateClockDom($(".clock#clock-m"), clockM);
 }
 //Reloj 1
-worker1.onmessage = function (e) {
+worker1.onmessage = e => {
     let clock1 = e.data;
     // logClock('Clock 1', clock1);
     updateClockDom($(".clock#clock-1"), clock1);
 }
 //Reloj 2
-worker2.onmessage = function (e) {
+worker2.onmessage = e => {
     let clock2 = e.data;
     // logClock('Clock 2', clock2);
     updateClockDom($(".clock#clock-2"), clock2);
 }
 //Reloj 3
-worker3.onmessage = function (e) {
+worker3.onmessage = e => {
     let clock3 = e.data;
     // logClock('Clock 3', clock3);
     updateClockDom($(".clock#clock-3"), clock3);
