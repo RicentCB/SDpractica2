@@ -41,7 +41,6 @@ function mainLoop(velocity) {
 }
 
 var name;
-var client;
 
 
 /*
@@ -58,12 +57,11 @@ Can receive a JS object with the following structure:
 }
 */
 onmessage = function initState(e) {
-
     let enableSocket = e.data.hasOwnProperty('destAddr');
+
     if (enableSocket) {
-        let dest = e.data.destAddr;
-        client = dgram.createSocket('udp4');
-        client.connect(dest.port, dest.ip);
+        var ip = e.data.destAddr.ip;
+        var port = e.data.destAddr.port;
     }
 
     name = e.data.name;
@@ -101,16 +99,16 @@ onmessage = function initState(e) {
                 mlHandler = mainLoop(velocity);
             } else if (e.data.action === 'stop'){
                 clearInterval(mlHandler);
-            } else if (e.data.action === 'send' && enableSocket) {
-                let address = client.address();
-                console.log(`Sending data to ${address.address}:${address.port}` );
+            } else if ((e.data.action === 'send') && enableSocket) {
+                let client = dgram.createSocket('udp4');
+                console.log(`Sending data to ${ip}:${port}` );
                 let data = {
                     time: internal_clock.time,
                     name: name,
                 }
                 let message = Buffer.from(JSON.stringify(data));
 
-                client.send(message);
+                client.send(message, port, ip);
             }
         }
     })();

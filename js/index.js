@@ -129,7 +129,7 @@ export default function main() {
     worker1.postMessage({
         name: "Reloj 1",
         destAddr: {
-            port: 5500,
+            port: 41231,
             ip: "localhost"
         }
     });
