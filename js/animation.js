@@ -1,8 +1,10 @@
+$(document).ready(function(){
+    $('#btn-transtion').on('click', function(e) {
+        e.preventDefault();
+        transition();
+    });
+})
 
-$('#btn-transtion').on('click', function(e) {
-    e.preventDefault();
-    transition();
-  });
   
 function transition() {
     var tl = new TimelineMax();

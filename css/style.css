@@ -6,10 +6,10 @@ section#first-slide p{
 }
 
 section#main-content {
-    height: 100vh;
+    /* height: 100vh; */
     background-color: rgb(51, 51, 51);
     width: 100%;
-    position: fixed;
+    position: absolute;
     z-index: 1;
     padding: 7% 5%;
     box-sizing: border-box;
