@@ -43,19 +43,31 @@ section#main-content .clock h3{
     border-radius: 25px;
     padding: 13px 10px 13px 15px;
     font-size: 1.2em;
-    background-color: rgb(255, 75, 20);
     color: white;
     position: absolute;
-    right: -20px;
+    top: -25px;
     z-index: 3;
     transition: all 0.25s ease-in;
 }
 #main-content .clock a.btn-float.edit-clock{
-    top: 10%;
+    left: -25px;
+    background-color: rgb(255, 75, 20);
 }
 #main-content .clock a.btn-float.send-clock{
-    bottom: 10%;
+    left: 35px;
     background-color: rgb(45, 213, 243);
+}
+#main-content .clock a.btn-float.back-step{
+    top: auto;
+    bottom: -25px;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.01);
+}
+#main-content .clock a.btn-float.front-step{
+    top: auto;
+    bottom: -25px;
+    right: 50px;
+    background-color: rgba(255, 255, 255, 0.01);
 }
 #main-content .clock a.btn-float:hover{
     transform: scale(1.2);
