@@ -26,7 +26,7 @@ class Clock{
         this._sec = newSec;
     }
 
-    update(){
+    increment(){
         this._sec += 1;
         if(this._sec == 60){
             this._sec = 0

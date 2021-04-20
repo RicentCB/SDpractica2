@@ -11,6 +11,12 @@ const initClocks = ()=>{
     clock3 = new Clock(getRandom(24), getRandom(60), getRandom(60));
 }
 
+const incrementClocks = ()=>{
+    clockM.increment();
+    clock1.increment();
+    clock2.increment();
+    clock3.increment();
+}
 
 $(document).ready(function(){
     //Inicializar Relojes
@@ -22,8 +28,8 @@ $(document).ready(function(){
     console.log(clock3)
     
     
-    // let interval1 = 1000;
-    // setInterval(clock1.update(), interval1);
+    let interval1 = 1000;
+    setInterval(clock1.increment(), interval1);
 
 
 })
