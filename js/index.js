@@ -2,12 +2,7 @@ const logClock = (name, time)=>{
     console.log(`${name}: ${time.hours}:${time.minutes}:${time.seconds}`);
 }
 
-const asDoubleDigit = num=> {
-    if (num < 10)
-        return "0" + num;
-    else
-        return num.toString();
-}
+const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString())
 
 const updateClockDom = (domElement, clock)=>{
     domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
