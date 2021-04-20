@@ -7,24 +7,19 @@ class Clock{
     get hour(){
         if(this._hour.toString().length < 2)
             return `0${this._hour}`;
+        return this._hour;
     }
     get min(){
         if(this._min.toString().length < 2)
             return `0${this._min}`;
+        return this._min;
     }
     get sec(){
         if(this._sec.toString().length < 2)
             return `0${this._sec}`;
+        return this._sec;
     }
-    set hour(newHour){
-        this._hour = newHour;
-    }
-    set min(newMin){
-        this._min = newMin;
-    }
-    set sec(newSec){
-        this._sec = newSec;
-    }
+
 
     increment(){
         this._sec += 1;

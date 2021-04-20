@@ -18,18 +18,40 @@ const incrementClocks = ()=>{
     clock3.increment();
 }
 
-$(document).ready(function(){
-    //Inicializar Relojes
-    initClocks();
 
+//Inicializar Relojes
+initClocks();
+$(document).ready(function(){
+    
     console.log(clockM)
     console.log(clock1)
     console.log(clock2)
     console.log(clock3)
     
-    
-    let interval1 = 1000;
-    setInterval(clock1.increment(), interval1);
+    updateInteface();
+    // let interval1 = 1000;
+    // setInterval(clock1.increment(), interval1);
 
 
 })
+const updateInteface = ()=>{
+    //Reloj Maestro
+    let domClockM = $(".clock#clock-m")
+    domClockM.find("h1.hours").html(clockM.hour);
+    domClockM.find("h1.mins").html(clockM.min);
+    domClockM.find("h1.secs").html(clockM.sec);
+    //Reloj 1
+    let domClock1 = $(".clock#clock-1")
+    domClock1.find("h1.hours").html(clock1.hour);
+    domClock1.find("h1.mins").html(clock1.min);
+    domClock1.find("h1.secs").html(clock1.sec);
+    //Reloj 2
+    let domClock2 = $(".clock#clock-2")
+    domClock2.find("h1.hours").html(clock2.hour);
+    domClock2.find("h1.mins").html(clock2.min);
+    domClock2.find("h1.secs").html(clock2.sec);
+    let domClock3 = $(".clock#clock-3")
+    domClock3.find("h1.hours").html(clock3.hour);
+    domClock3.find("h1.mins").html(clock3.min);
+    domClock3.find("h1.secs").html(clock3.sec);
+}
