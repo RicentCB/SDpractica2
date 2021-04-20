@@ -10,6 +10,8 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegrationInWorker: true,
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
 
