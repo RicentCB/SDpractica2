@@ -2,16 +2,16 @@ const logClock = (name, time) => {
     console.log(`${name}: ${time.hours}:${time.minutes}:${time.seconds}`);
 }
 
-const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString())
+const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString());
 
-const updateClockDom = (domElement, clock)=>{
+const updateClockDom = (domElement, clock) => {
     domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
     domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
     domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
 }
 
-const assignEditController = (worker, domElement)=>{
-    domElement.on('click', e=>{
+const assignEditController = (worker, domElement) => {
+    domElement.on('click', e => {
         e.preventDefault();
         let currHours = Number(domElement.parent().find("h1.hours").html());
         let currMins = Number(domElement.parent().find("h1.mins").html());
@@ -34,11 +34,12 @@ const assignEditController = (worker, domElement)=>{
             }
         })
 
+        // logClock("test", )
     })
 }
 
-const assignSendController = (worker, domElement)=>{
-    domElement.on('click', function(e){
+const assignSendController = (worker, domElement) => {
+    domElement.on('click', function (e) {
         e.preventDefault()
         worker.postMessage({
             action: 'send'
@@ -46,14 +47,14 @@ const assignSendController = (worker, domElement)=>{
     })
 }
 
-const assignVelocityController = (worker, domElements)=>{
+const assignVelocityController = (worker, domElements) => {
     let velocity = 1.0;
     let delta = 1.0;
     let maximum = 100;
     const delayAnimation = 1500;
 
     (() => {
-        domElements.increase.on('click',  e=>{
+        domElements.increase.on('click', e => {
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
@@ -69,10 +70,10 @@ const assignVelocityController = (worker, domElements)=>{
             }
 
             notification.html(notifMessage).addClass("appear");
-            setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
+            setTimeout(() => { notification.removeClass("appear") }, delayAnimation);
 
         });
-        domElements.decrease.on('click', e=>{
+        domElements.decrease.on('click', e => {
             e.preventDefault();
             let notification = $(this).parent().find(".notification");
             let notifMessage;
@@ -88,17 +89,16 @@ const assignVelocityController = (worker, domElements)=>{
             }
 
             notification.html(notifMessage).addClass("appear");
-            setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
+            setTimeout(() => { notification.removeClass("appear") }, delayAnimation);
         });
-
 
     })();
 }
 
-var workerM = new Worker('./js/clock.js');
-var worker1 = new Worker('./js/clock.js');
-var worker2 = new Worker('./js/clock.js');
-var worker3 = new Worker('./js/clock.js');
+var workerM = new Worker('./js/worker.js', { type: "module" });
+var worker1 = new Worker('./js/worker.js', { type: "module" });
+var worker2 = new Worker('./js/worker.js', { type: "module" });
+var worker3 = new Worker('./js/worker.js', { type: "module" });
 
 //Reloj Maestro
 workerM.onmessage = e => {
@@ -132,7 +132,7 @@ export default function main() {
     worker1.postMessage({
         name: "Reloj 1",
         destAddr: {
-            port: 41231,
+            port: 41234,
             ip: "localhost"
         }
     });
