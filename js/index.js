@@ -13,20 +13,20 @@ const updateClockDom = (domElement, clock)=>{
 const assignEditController = (worker, domElement)=>{
     domElement.on('click', e=>{
         e.preventDefault();
-        
+        //Detener Reloj
+        worker.postMessage({
+            action: 'stop'  
+        })
         //Editar reloj
         worker.postMessage({
-            action: 'setTime',
+            action: 'setTimeNoStart',
             time: {
                 hours: 12,
                 mins: 30,
                 secs: 30,
             }
         })
-        //Detener Reloj
-        worker.postMessage({
-            action: 'stop'  
-        })
+        
         // logClock("test", )
     })
 }

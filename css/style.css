@@ -16,7 +16,11 @@ section#main-content {
 }
 section#main-content > h1{
     margin-bottom: 25px;
-    color: lightcyan;
+    color: rgb(136, 255, 255);
+}
+section#main-content > h2{
+    margin-bottom: 25px;
+    color: rgb(227, 255, 255);
 }
 section#main-content .row-flex-container{
     display: flex;
