@@ -1,4 +1,4 @@
-const logClock = (name, time)=>{
+const logClock = (name, time) => {
     console.log(`${name}: ${time.hours}:${time.minutes}:${time.seconds}`);
 }
 

@@ -30,7 +30,7 @@ const getRandom = maxNum => (Math.floor(Math.random() * maxNum));
 
 var internal_clock = new Clock();
 
-function mainLoop() {
+const mainLoop = () =>{
     const velocity = 0.7;
     return setInterval(function () {
         internal_clock.advance();
