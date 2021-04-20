@@ -103,6 +103,8 @@ onmessage = function initState(e) {
                 mlHandler = mainLoop(velocity);
             } else if (e.data.action === 'stop'){
                 clearInterval(mlHandler);
+            } else if (e.data.action === 'getTime'){
+                postMessage(internal_clock.time);
             } else if ((e.data.action === 'send') && enableSocket) {
                 let client = dgram.createSocket('udp4');
                 console.log(`Sending data to ${ip}:${port}` );

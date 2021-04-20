@@ -13,9 +13,15 @@ const updateClockDom = (domElement, clock)=>{
 const assignEditController = (worker, domElement)=>{
     domElement.on('click', e=>{
         e.preventDefault();
+        let currHours = Number(domElement.parent().find("h1.hours").html());
+        let currMins = Number(domElement.parent().find("h1.mins").html());
+        let currSecs = Number(domElement.parent().find("h1.secs").html());
+        console.log(currHours);
+        console.log(currMins);
+        console.log(currSecs);
         //Detener Reloj
         worker.postMessage({
-            action: 'stop'  
+            action: 'stop'
         })
         //Editar reloj
         worker.postMessage({
@@ -26,8 +32,7 @@ const assignEditController = (worker, domElement)=>{
                 secs: 30,
             }
         })
-        
-        // logClock("test", )
+
     })
 }
 
@@ -61,10 +66,10 @@ const assignVelocityController = (worker, domElements)=>{
                     velocity: velocity
                 });
             }
-            
+
             notification.html(notifMessage).addClass("appear");
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
-            
+
         });
         domElements.decrease.on('click', e=>{
             e.preventDefault();
@@ -85,7 +90,7 @@ const assignVelocityController = (worker, domElements)=>{
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
         });
 
-        
+
     })();
 }
 

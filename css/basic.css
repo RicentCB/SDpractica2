@@ -95,7 +95,7 @@ body:after {
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
-    z-index: 500;
+    z-index: 3;
     opacity: 0;
 }
 .loader > div {
@@ -209,4 +209,9 @@ section#first-slide .content > div > h1{
 }
 .start-button:active {
     transform: scale(0.96);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
