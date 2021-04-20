@@ -4,19 +4,19 @@ const logClock = (name, time) => {
 
 const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString())
 
-function updateClockDom(domElement, clock) {
+const updateClockDom = (domElement, clock)=>{
     domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
     domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
     domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
 }
 
-function assignVelocityController(worker, domElements) {
+const assignVelocityController = (worker, domElements) =>{
     let velocity = 1.0;
     let delta = 1.0;
     let maximum = 100;
     const delayAnimation = 1500;
 
-    (function () {
+    (()=>{
         console.log("Assigning callbacks");
         domElements.increase.on('click', function (e) {
             e.preventDefault();
@@ -51,7 +51,7 @@ function assignVelocityController(worker, domElements) {
                     velocity: velocity
                 });
             }
-            
+
             notification.html(notifMessage).addClass("appear");
             setTimeout(()=>{notification.removeClass("appear")}, delayAnimation);
         });
