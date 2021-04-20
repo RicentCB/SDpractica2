@@ -4,37 +4,56 @@ const logClock = (name, time) => {
 
 const asDoubleDigit = num => ((num < 10) ? ("0" + num) : num.toString());
 
-const updateClockDom = (domElement, clock) => {
-    domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
-    domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
-    domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
+const modalEdit = $("#modal-edit-clock");
+var editingClock;
+
+//Cerrar Modal
+modalEdit.find("a.button.cancel").on("click", e=>{
+    e.preventDefault();
+    modalEdit.removeClass("show");
+})
+
+//Aceptar cambio
+modalEdit.find("a.button.accept").on("click", e=>{
+    e.preventDefault();
+    let newHours = Number(modalEdit.find("h1.hours input").val())
+    let newMins= Number(modalEdit.find("h1.mins input").val())
+    let newSecs = Number(modalEdit.find("h1.secs input").val())
+    let time = {
+        hours: newHours,
+        mins: newMins,
+        secs: newSecs,
+    };
+    //Camnbiar reloj
+    workerM.postMessage({
+        action: 'setTimeNoStart',
+        time: time,
+    })
+    //Cerrar modal
+    modalEdit.removeClass("show");
+})
+
+
+const openModalEditCLock = (currHours, currMins, currSecs) =>{
+    modalEdit.find(".hours input").val(currHours);
+    modalEdit.find(".mins input").val(currMins);
+    modalEdit.find(".secs input").val(currSecs);
+    modalEdit.addClass("show");
 }
 
-const assignEditController = (worker, domElement) => {
+const assignEditController = (worker, domElement, idClock) => {
     domElement.on('click', e => {
         e.preventDefault();
         let currHours = Number(domElement.parent().find("h1.hours").html());
         let currMins = Number(domElement.parent().find("h1.mins").html());
         let currSecs = Number(domElement.parent().find("h1.secs").html());
-        console.log(currHours);
-        console.log(currMins);
-        console.log(currSecs);
         //Detener Reloj
         worker.postMessage({
             action: 'stop'
         })
-        $("#modal-edit-clock").addClass("show");
-        //Editar reloj
-        worker.postMessage({
-            action: 'setTimeNoStart',
-            time: {
-                hours: 12,
-                mins: 30,
-                secs: 30,
-            }
-        })
-
-        // logClock("test", )
+        editingClock = idClock; 
+        openModalEditCLock(currHours, currMins, currSecs);
+        
     })
 }
 
@@ -95,6 +114,12 @@ const assignVelocityController = (worker, domElements) => {
     })();
 }
 
+const updateClockDom = (domElement, clock) => {
+    domElement.find("h1.hours").html(asDoubleDigit(clock.hours));
+    domElement.find("h1.mins").html(asDoubleDigit(clock.minutes));
+    domElement.find("h1.secs").html(asDoubleDigit(clock.seconds));
+}
+
 var workerM = new Worker('./js/worker.js', { type: "module" });
 var worker1 = new Worker('./js/worker.js', { type: "module" });
 var worker2 = new Worker('./js/worker.js', { type: "module" });
@@ -143,24 +168,27 @@ export default function main() {
         name: "Reloj 3"
     });
 
-    assignEditController(workerM, $(".clock#clock-m .edit-clock"))
+    assignEditController(workerM, $(".clock#clock-m .edit-clock"), 0);
     assignVelocityController(workerM, {
         increase: $(".clock#clock-m .increase"),
         decrease: $(".clock#clock-m .decrease")
     });
-
+    
+    assignEditController(worker1, $(".clock#clock-1 .edit-clock"), 1);
     assignSendController(worker1, $(".clock#clock-1 .send-clock"));
     assignVelocityController(worker1, {
         increase: $(".clock#clock-1 .increase"),
         decrease: $(".clock#clock-1 .decrease")
     });
-
+    
+    assignEditController(worker2, $(".clock#clock-2 .edit-clock"), 2);
     assignSendController(worker2, $(".clock#clock-2 .send-clock"));
     assignVelocityController(worker2, {
         increase: $(".clock#clock-2 .increase"),
         decrease: $(".clock#clock-2 .decrease")
     });
-
+    
+    assignEditController(worker3, $(".clock#clock-3 .edit-clock"), 3);
     assignSendController(worker3, $(".clock#clock-3 .send-clock"));
     assignVelocityController(worker3, {
         increase: $(".clock#clock-3 .increase"),
