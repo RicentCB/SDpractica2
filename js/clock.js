@@ -17,11 +17,11 @@ class Clock {
             seconds: seconds
         };
     }
-    set time(time) {
-        hours %= 24;
-        mins %= 60;
-        secs %= 60;
-        this._seconds = time.hours * 60 * 60 + time.mins * 60 + time.secs;
+    set time(newTime) {
+        newTime.hours %= 24;
+        newTime.mins %= 60;
+        newTime.secs %= 60;
+        this._seconds = newTime.hours * 60 * 60 + newTime.mins * 60 + newTime.secs;
     }
     advance() {
         this._seconds = (this._seconds + 1) % (24 * 60 * 60);
